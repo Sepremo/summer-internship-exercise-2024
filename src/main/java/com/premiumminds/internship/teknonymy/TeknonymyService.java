@@ -8,7 +8,7 @@ import java.util.Queue;
 
 class TeknonymyService implements ITeknonymyService {
 
-  // Global variables to be acessed in recursive DFS to save memory
+  // Global variables to be acessed in recursive DFS
   private Person oldestDescendant;
   private int oldestGeneration = 0;
 
@@ -29,13 +29,6 @@ class TeknonymyService implements ITeknonymyService {
     return buildRelationshipString(oldestGeneration, person.sex()) + " of " + oldestDescendant.name();
   };
 
-  /**
-   * Performs a recursive depth-first search (DFS) to find the oldest descendant of a given person.
-   * This method updates the `oldestGeneration` and `oldestDescendant` fields based on the search.
-   *
-   * @param person The starting person for the DFS.
-   * @param generation The current generation level, starting from 0 for the root person.
-   */
   private void recursiveDFS(Person person, int generation){
     if (person.children() != null){
       for(Person child : person.children()){
@@ -49,15 +42,6 @@ class TeknonymyService implements ITeknonymyService {
     }
   }
 
-  /**
-   * Generates a string describing a familial relationship based on generation and
-   * sex.
-   *
-   * @param generation the number of generations away (1 for parent, 2 for
-   *                   grandparent, etc.)
-   * @param sex        'M' for male, 'F' for female
-   * @return the relationship as a string (e.g., "great-grandfather")
-   */
   private String buildRelationshipString(int generation, char sex) {
     StringBuilder relationship = new StringBuilder();
 
