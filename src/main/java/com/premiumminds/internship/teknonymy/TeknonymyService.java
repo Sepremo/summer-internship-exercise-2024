@@ -29,6 +29,13 @@ class TeknonymyService implements ITeknonymyService {
     return buildRelationshipString(oldestGeneration, person.sex()) + " of " + oldestDescendant.name();
   };
 
+  /**
+   * Performs a recursive depth-first search (DFS) to find the oldest descendant of a given person.
+   * This method updates the `oldestGeneration` and `oldestDescendant` fields based on the search.
+   *
+   * @param person The starting person for the DFS.
+   * @param generation The current generation level, starting from 0 for the root person.
+   */
   private void recursiveDFS(Person person, int generation){
     if (person.children() != null){
       for(Person child : person.children()){
