@@ -7,15 +7,10 @@ import java.util.Collections;
 import java.util.Queue;
 
 class TeknonymyService implements ITeknonymyService {
-  class PersonWithGeneration {
-    Person person;
-    int generation;
 
-    PersonWithGeneration(Person person, int generation) {
-      this.person = person;
-      this.generation = generation;
-    }
-  }
+  // Global variables to be acessed in recursive DFS to save memory
+  private Person oldestDescendant;
+  private int oldestGeneration = 0;
 
   /**
    * Method to get a Person Teknonymy Name
@@ -27,28 +22,25 @@ class TeknonymyService implements ITeknonymyService {
     if (person.children() == null) {
       return "";
     }
+    oldestDescendant = person;
 
-    Person oldestDescendant = person;
-    int oldestGeneration = 0;
-
-    ArrayDeque<PersonWithGeneration> descendantsStack = new ArrayDeque<>();
-    Arrays.stream(person.children()).forEach(
-        child -> descendantsStack.add(new PersonWithGeneration(child, 1)));
-
-    while (!descendantsStack.isEmpty()) {
-      PersonWithGeneration current = descendantsStack.pop();
-      if (current.person.children() != null) {
-        Arrays.stream(current.person.children()).forEach(
-            child -> descendantsStack.add(new PersonWithGeneration(child, current.generation + 1)));
-      } else if (current.generation > oldestGeneration
-          || current.person.dateOfBirth().isBefore(oldestDescendant.dateOfBirth())) {
-        oldestDescendant = current.person;
-        oldestGeneration = current.generation;
-      }
-    }
+    recursiveDFS(person, 0);
 
     return buildRelationshipString(oldestGeneration, person.sex()) + " of " + oldestDescendant.name();
   };
+
+  private void recursiveDFS(Person person, int generation){
+    if (person.children() != null){
+      for(Person child : person.children()){
+        recursiveDFS(child, generation + 1);
+      }
+    } else if (generation > oldestGeneration){
+      oldestGeneration = generation;
+      oldestDescendant = person;
+    } else if (generation == oldestGeneration && person.dateOfBirth().isBefore(oldestDescendant.dateOfBirth())) {
+      oldestDescendant = person;
+    }
+  }
 
   /**
    * Generates a string describing a familial relationship based on generation and
