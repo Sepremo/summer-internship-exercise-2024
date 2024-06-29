@@ -29,12 +29,12 @@ class TeknonymyService implements ITeknonymyService {
     return buildRelationshipString(oldestGeneration, person.sex()) + " of " + oldestDescendant.name();
   };
 
-  private void recursiveDFS(Person person, int generation){
-    if (person.children() != null){
-      for(Person child : person.children()){
+  private void recursiveDFS(Person person, int generation) {
+    if (person.children() != null) {
+      for (Person child : person.children()) {
         recursiveDFS(child, generation + 1);
       }
-    } else if (generation > oldestGeneration){
+    } else if (generation > oldestGeneration) {
       oldestGeneration = generation;
       oldestDescendant = person;
     } else if (generation == oldestGeneration && person.dateOfBirth().isBefore(oldestDescendant.dateOfBirth())) {

@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 @RunWith(JUnit4.class)
 public class TeknonymyServiceTest {
 
@@ -30,7 +29,7 @@ public class TeknonymyServiceTest {
 
   @Test
   public void PersonNoChildrenTest() {
-    Person person = new Person("John",'M',null, LocalDateTime.of(1046, 1, 1, 0, 0));
+    Person person = new Person("John", 'M', null, LocalDateTime.of(1046, 1, 1, 0, 0));
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "";
     assertEquals(result, expected);
@@ -41,7 +40,7 @@ public class TeknonymyServiceTest {
     Person person = new Person(
         "John",
         'M',
-        new Person[]{ new Person("Holy",'F', null, LocalDateTime.of(1046, 1, 1, 0, 0)) },
+        new Person[] { new Person("Holy", 'F', null, LocalDateTime.of(1046, 1, 1, 0, 0)) },
         LocalDateTime.of(1046, 1, 1, 0, 0));
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "father of Holy";
@@ -53,7 +52,7 @@ public class TeknonymyServiceTest {
     Person person = new Person(
         "John",
         'M',
-        new Person[]{
+        new Person[] {
             new Person("Holy", 'F', null, LocalDateTime.of(1046, 1, 1, 0, 0)),
             new Person("Grace", 'F', null, LocalDateTime.of(1047, 2, 2, 0, 0)),
             new Person("Brad", 'M', null, LocalDateTime.of(1048, 3, 3, 0, 0)),
@@ -69,11 +68,13 @@ public class TeknonymyServiceTest {
   @Test
   public void PersonOneGreatGreatGreatGrandchildTest() {
     Person greatGreatGreatGrandchild = new Person("Joy", 'F', null, LocalDateTime.of(1120, 1, 1, 0, 0));
-    Person greatGreatGrandchild = new Person("Joy", 'F', new Person[]{greatGreatGreatGrandchild}, LocalDateTime.of(1100, 1, 1, 0, 0));
-    Person greatGrandchild = new Person("Albert", 'M', new Person[]{greatGreatGrandchild}, LocalDateTime.of(1080, 1, 1, 0, 0));
-    Person grandchild = new Person("Faith", 'F', new Person[]{greatGrandchild}, LocalDateTime.of(1060, 1, 1, 0, 0));
-    Person child = new Person("Grace", 'F', new Person[]{grandchild}, LocalDateTime.of(1040, 1, 1, 0, 0));
-    Person person = new Person("John", 'M', new Person[]{child}, LocalDateTime.of(1020, 1, 1, 0, 0));
+    Person greatGreatGrandchild = new Person("Joy", 'F', new Person[] { greatGreatGreatGrandchild },
+        LocalDateTime.of(1100, 1, 1, 0, 0));
+    Person greatGrandchild = new Person("Albert", 'M', new Person[] { greatGreatGrandchild },
+        LocalDateTime.of(1080, 1, 1, 0, 0));
+    Person grandchild = new Person("Faith", 'F', new Person[] { greatGrandchild }, LocalDateTime.of(1060, 1, 1, 0, 0));
+    Person child = new Person("Grace", 'F', new Person[] { grandchild }, LocalDateTime.of(1040, 1, 1, 0, 0));
+    Person person = new Person("John", 'M', new Person[] { child }, LocalDateTime.of(1020, 1, 1, 0, 0));
 
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "great-great-great-grandfather of Joy";
@@ -86,9 +87,11 @@ public class TeknonymyServiceTest {
     Person grandchild2 = new Person("Bob", 'M', null, LocalDateTime.of(1071, 2, 2, 0, 0));
     Person grandchild3 = new Person("Charlie", 'M', null, LocalDateTime.of(1060, 3, 3, 0, 0));
     Person grandchild4 = new Person("Diana", 'F', null, LocalDateTime.of(1061, 4, 4, 0, 0));
-    Person child1 = new Person("Eve", 'F', new Person[]{grandchild1, grandchild2}, LocalDateTime.of(1040, 1, 1, 0, 0));
-    Person child2 = new Person("Frank", 'M', new Person[]{grandchild3, grandchild4}, LocalDateTime.of(1041, 2, 2, 0, 0));
-    Person person = new Person("John", 'M', new Person[]{child1, child2}, LocalDateTime.of(1020, 1, 1, 0, 0));
+    Person child1 = new Person("Eve", 'F', new Person[] { grandchild1, grandchild2 },
+        LocalDateTime.of(1040, 1, 1, 0, 0));
+    Person child2 = new Person("Frank", 'M', new Person[] { grandchild3, grandchild4 },
+        LocalDateTime.of(1041, 2, 2, 0, 0));
+    Person person = new Person("John", 'M', new Person[] { child1, child2 }, LocalDateTime.of(1020, 1, 1, 0, 0));
 
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "grandfather of Charlie";
@@ -98,12 +101,13 @@ public class TeknonymyServiceTest {
   @Test
   public void PersonThreeChildrenTwoGrandchildrenOneGreatGrandchildTest() {
     Person greatGrandchild = new Person("Lily", 'F', null, LocalDateTime.of(1100, 1, 1, 0, 0));
-    Person grandchild1 = new Person("Emma", 'F', new Person[]{greatGrandchild}, LocalDateTime.of(1080, 1, 1, 0, 0));
+    Person grandchild1 = new Person("Emma", 'F', new Person[] { greatGrandchild }, LocalDateTime.of(1080, 1, 1, 0, 0));
     Person grandchild2 = new Person("Noah", 'M', null, LocalDateTime.of(1082, 2, 2, 0, 0));
-    Person child1 = new Person("Olivia", 'F', new Person[]{grandchild1}, LocalDateTime.of(1060, 1, 1, 0, 0));
+    Person child1 = new Person("Olivia", 'F', new Person[] { grandchild1 }, LocalDateTime.of(1060, 1, 1, 0, 0));
     Person child2 = new Person("Liam", 'M', null, LocalDateTime.of(1062, 2, 2, 0, 0));
-    Person child3 = new Person("Sophia", 'F', new Person[]{grandchild2}, LocalDateTime.of(1064, 3, 3, 0, 0));
-    Person person = new Person("Mary", 'F', new Person[]{child1, child2, child3}, LocalDateTime.of(1040, 1, 1, 0, 0));
+    Person child3 = new Person("Sophia", 'F', new Person[] { grandchild2 }, LocalDateTime.of(1064, 3, 3, 0, 0));
+    Person person = new Person("Mary", 'F', new Person[] { child1, child2, child3 },
+        LocalDateTime.of(1040, 1, 1, 0, 0));
 
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "great-grandmother of Lily";
@@ -135,13 +139,18 @@ public class TeknonymyServiceTest {
     Person grandchild8 = new Person("Grandchild8", 'M', null, LocalDateTime.of(1100, 8, 8, 0, 0));
 
     // Creating children
-    Person child1 = new Person("Child1", 'F', new Person[]{grandchild1, grandchild2}, LocalDateTime.of(1080, 1, 1, 0, 0));
-    Person child2 = new Person("Child2", 'M', new Person[]{grandchild3, grandchild4}, LocalDateTime.of(1080, 2, 2, 0, 0));
-    Person child3 = new Person("Child3", 'F', new Person[]{grandchild5, grandchild6}, LocalDateTime.of(1080, 3, 3, 0, 0));
-    Person child4 = new Person("Child4", 'M', new Person[]{grandchild7, grandchild8}, LocalDateTime.of(1080, 4, 4, 0, 0));
+    Person child1 = new Person("Child1", 'F', new Person[] { grandchild1, grandchild2 },
+        LocalDateTime.of(1080, 1, 1, 0, 0));
+    Person child2 = new Person("Child2", 'M', new Person[] { grandchild3, grandchild4 },
+        LocalDateTime.of(1080, 2, 2, 0, 0));
+    Person child3 = new Person("Child3", 'F', new Person[] { grandchild5, grandchild6 },
+        LocalDateTime.of(1080, 3, 3, 0, 0));
+    Person child4 = new Person("Child4", 'M', new Person[] { grandchild7, grandchild8 },
+        LocalDateTime.of(1080, 4, 4, 0, 0));
 
     // Creating the test person
-    Person person = new Person("John", 'M', new Person[]{child1, child2, child3, child4}, LocalDateTime.of(1060, 1, 1, 0, 0));
+    Person person = new Person("John", 'M', new Person[] { child1, child2, child3, child4 },
+        LocalDateTime.of(1060, 1, 1, 0, 0));
 
     String result = new TeknonymyService().getTeknonymy(person);
     String expected = "great-grandfather of Target1";
@@ -157,10 +166,10 @@ public class TeknonymyServiceTest {
         for (int k = 0; k < 5; k++) {
           for (int l = 0; l < 5; l++) {
             greatGreatGrandchildren[i][j][k][l] = new Person(
-              "GGGChild" + (i*125 + j*25 + k*5 + l + 1),
-              'F',
-              null,
-              LocalDateTime.of(1140, 1, 1, 0, 0).plusDays(l) // Unique birthdate between siblings
+                "GGGChild" + (i * 125 + j * 25 + k * 5 + l + 1),
+                'F',
+                null,
+                LocalDateTime.of(1140, 1, 1, 0, 0).plusDays(l) // Unique birthdate between siblings
             );
           }
         }
@@ -173,10 +182,10 @@ public class TeknonymyServiceTest {
       for (int j = 0; j < 5; j++) {
         for (int k = 0; k < 5; k++) {
           greatGrandchildren[i][j][k] = new Person(
-            "GGChild" + (i*25 + j*5 + k + 1),
-            'M',
-            greatGreatGrandchildren[i][j][k],
-            LocalDateTime.of(1120, 1, 1, 0, 0).plusDays(k) // Unique birthdate between siblings
+              "GGChild" + (i * 25 + j * 5 + k + 1),
+              'M',
+              greatGreatGrandchildren[i][j][k],
+              LocalDateTime.of(1120, 1, 1, 0, 0).plusDays(k) // Unique birthdate between siblings
           );
         }
       }
@@ -187,10 +196,10 @@ public class TeknonymyServiceTest {
     for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 5; j++) {
         grandchildren[i][j] = new Person(
-          "GChild" + (i*5 + j + 1),
-          'F',
-          greatGrandchildren[i][j],
-          LocalDateTime.of(1100, 1, 1, 0, 0).plusDays(j) // Unique birthdate between siblings
+            "GChild" + (i * 5 + j + 1),
+            'F',
+            greatGrandchildren[i][j],
+            LocalDateTime.of(1100, 1, 1, 0, 0).plusDays(j) // Unique birthdate between siblings
         );
       }
     }
@@ -199,10 +208,10 @@ public class TeknonymyServiceTest {
     Person[] children = new Person[5];
     for (int i = 0; i < 5; i++) {
       children[i] = new Person(
-        "Child" + (i + 1),
-        'M',
-        grandchildren[i],
-        LocalDateTime.of(1080, 1, 1, 0, 0).plusDays(i) // Unique birthdate between siblings
+          "Child" + (i + 1),
+          'M',
+          grandchildren[i],
+          LocalDateTime.of(1080, 1, 1, 0, 0).plusDays(i) // Unique birthdate between siblings
       );
     }
 
